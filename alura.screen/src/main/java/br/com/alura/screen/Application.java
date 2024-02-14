@@ -1,4 +1,4 @@
-package br.com.alura.screenmatch;
+package br.com.alura.screen;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
