@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import br.com.alura.screen.model.DadosEpisodio;
 import br.com.alura.screen.model.DadosSerie;
 import br.com.alura.screen.service.ConsumoAPI;
 import br.com.alura.screen.service.ConverteDados;
@@ -25,6 +26,10 @@ public class Application implements CommandLineRunner{
 		ConverteDados conversor = new ConverteDados();
 		DadosSerie dados = conversor.obterDados(json, DadosSerie.class);
 		System.out.println(dados);
+		
+		json = consumoAPI.obterDados("https://www.omdbapi.com/?t=gilmore+girls&season=1&episode=2&apikey=ed670f10");
+		DadosEpisodio dadosEpisodio = conversor.obterDados(json, DadosEpisodio.class);
+		System.out.println(dadosEpisodio);
 		
 		
 		//		json = consumoAPI.obterDados("https://coffee.alexflipnote.dev/random.json");
