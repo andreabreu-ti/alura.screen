@@ -101,6 +101,7 @@ public class Principal {
 
 	private void buscarEpisodioPorSerie() {
 
+		listarSeriesBuscadas();
 		System.out.println("Escolha uma série pelo nome: ");
 		var nomeSerie = leitura.nextLine();
 
@@ -120,10 +121,12 @@ public class Principal {
 			}
 			temporadas.forEach(System.out::println);
 
-			List<Episodio> episodios =  temporadas.stream().flatMap(d -> d.episodios().stream().map(e -> new Episodio(d.numero(), e))).collect(Collectors.toList());
-			
+			List<Episodio> episodios = temporadas.stream()
+					.flatMap(d -> d.episodios().stream().map(e -> new Episodio(d.numero(), e)))
+					.collect(Collectors.toList());
+
 			serieEncontrada.setEpisodios(episodios);
-			
+
 			repositorio.save(serieEncontrada);
 
 		} else {
