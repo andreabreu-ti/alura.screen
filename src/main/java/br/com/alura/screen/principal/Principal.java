@@ -45,12 +45,13 @@ public class Principal {
 			var menu = """
 					1 - Buscar séries
 					2 - Buscar episódios
-					3 - Listar séires buscadas
+					3 - Listar séries buscadas
 					4 - Buscar série por título
 					5 - Buscar series por ator
 					6 - Top 5 Séries
 					7 - Buscar Séries por Categoria
 					8 - Filtrar Séries por Temporada
+					9 - Buscar episódios por trecho
 
 					0 - Sair
 					""";
@@ -84,6 +85,9 @@ public class Principal {
 			case 8:
 				filtrarSeriesPorTemporadaEAvaliacao();
 				break;
+			case 9:
+				buscarEpisodioPorTrecho();
+				break;
 			case 0:
 				System.out.println("Saindo...");
 				break;
@@ -93,9 +97,21 @@ public class Principal {
 		}
 	}
 
+	private void buscarEpisodioPorTrecho() {
+
+		System.out.println("Qual o nome do episódio para busca?");
+		var trechoEpisodio = leitura.nextLine();
+
+		List<Episodio> episodiosEncontrados = repositorio.episodiosPorTrecho(trechoEpisodio);
+
+		episodiosEncontrados.forEach(e -> System.out.printf("Série: %s Temporada %s - Episódio %s - %s\n",
+				e.getSerie().getTitulo(), e.getTemporada(), e.getNumeroEpisodio(), e.getTitulo()));
+
+	}
+
 	private void filtrarSeriesPorTemporadaEAvaliacao() {
 
-		System.out.println("Filtrar séires até quantas temporadas? ");
+		System.out.println("Filtrar séries até quantas temporadas? ");
 		var totalTemporadas = leitura.nextInt();
 		leitura.nextLine();
 		System.out.println("Com avaliação a partir de que valor? ");
