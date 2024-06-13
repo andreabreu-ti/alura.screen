@@ -66,10 +66,9 @@ public class Serie {
 	}
 
 	public void setEpisodios(List<Episodio> episodios) {
-		
-		//Chave estrangeira para os episodios
-		episodios.forEach(e -> e.setSerie(null));
-		
+
+		// Chave estrangeira para os episodios
+		episodios.forEach(e -> e.setSerie(this));
 		this.episodios = episodios;
 	}
 
@@ -139,15 +138,10 @@ public class Serie {
 
 	@Override
 	public String toString() {
-		return "Genero=" + genero + '\'' + 
-				"Titulo=" + titulo + '\'' + 
-				"TotalTemporadas=" + totalTemporadas + '\''+ 
-				"Avaliacao=" + avaliacao + '\'' + 
-				"Atores=" + atores + '\'' + 
-				"Poster=" + poster + '\'' + 
-				"Sinopse="+ sinopse + '\''+
-				"Episódios="+ episodios + '\'';
-		
+		return "Genero=" + genero + '\'' + "Titulo=" + titulo + '\'' + "TotalTemporadas=" + totalTemporadas + '\''
+				+ "Avaliacao=" + avaliacao + '\'' + "Atores=" + atores + '\'' + "Poster=" + poster + '\'' + "Sinopse="
+				+ sinopse + '\'' + "Episódios=" + episodios + '\'';
+
 	}
 
 }

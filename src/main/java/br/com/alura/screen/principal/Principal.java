@@ -7,8 +7,6 @@ import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import br.com.alura.screen.model.DadosSerie;
 import br.com.alura.screen.model.DadosTemporada;
 import br.com.alura.screen.model.Episodio;
@@ -48,6 +46,8 @@ public class Principal {
 					1 - Buscar séries
 					2 - Buscar episódios
 					3 - Listar séires buscadas
+					4 - Buscar série por título
+					5 - Buscar series por ator
 
 					0 - Sair
 					""";
@@ -65,6 +65,12 @@ public class Principal {
 				break;
 			case 3:
 				listarSeriesBuscadas();
+				break;
+			case 4:
+				buscarSeriePorTitulo();
+				break;
+			case 5:
+				buscarSeriesPorAtor();
 				break;
 			case 0:
 				System.out.println("Saindo...");
@@ -105,8 +111,10 @@ public class Principal {
 		System.out.println("Escolha uma série pelo nome: ");
 		var nomeSerie = leitura.nextLine();
 
-		Optional<Serie> serie = series.stream()
-				.filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase())).findFirst();
+//		Optional<Serie> serie = series.stream()
+//				.filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase())).findFirst();
+
+		Optional<Serie> serie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
 
 		if (serie.isPresent()) {
 
@@ -153,6 +161,40 @@ public class Principal {
 
 		series = repositorio.findAll();
 		series.stream().sorted(Comparator.comparing(Serie::getGenero)).forEach(System.out::println);
+
+	}
+
+	private void buscarSeriePorTitulo() {
+
+		System.out.println("Escolha uma série pelo nome: ");
+		var nomeSerie = leitura.nextLine();
+
+		Optional<Serie> serieBuscada = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
+
+		if (serieBuscada.isPresent()) {
+
+			System.out.println("Dados da série: " + serieBuscada.get());
+
+		} else {
+
+			System.out.println("Série não encontrada!");
+
+		}
+
+	}
+
+	private void buscarSeriesPorAtor() {
+		System.out.println("Qual o nome para busca? ");
+		var nomeAtor = leitura.nextLine();
+
+		System.out.println("Avaliações a partir de que valor? ");
+		var avaliacao = leitura.nextDouble();
+
+		List<Serie> seriresEncontradas = repositorio
+				.findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(nomeAtor, avaliacao);
+		
+		System.out.println("Séries em que " + nomeAtor + " trabalho: ");
+		seriresEncontradas.forEach(s -> System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));
 
 	}
 
