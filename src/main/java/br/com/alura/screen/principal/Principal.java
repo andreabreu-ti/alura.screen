@@ -31,7 +31,6 @@ public class Principal {
 	private List<Serie> series = new ArrayList<Serie>();
 
 	public Principal(SerieRepository repositorio) {
-		// TODO Auto-generated constructor stub
 
 		this.repositorio = repositorio;
 	}
@@ -48,6 +47,7 @@ public class Principal {
 					3 - Listar séires buscadas
 					4 - Buscar série por título
 					5 - Buscar series por ator
+					6 - Top 5 Séries
 
 					0 - Sair
 					""";
@@ -72,6 +72,9 @@ public class Principal {
 			case 5:
 				buscarSeriesPorAtor();
 				break;
+			case 6:
+				buscarTop5Series();
+				break;
 			case 0:
 				System.out.println("Saindo...");
 				break;
@@ -82,10 +85,6 @@ public class Principal {
 	}
 
 	private void buscarSerieWeb() {
-
-		// DadosSerie dados = getDadosSerie();
-		// dadosSeries.add(dados);
-		// System.out.println(dados);
 
 		/**
 		 * Chamar o repositório Interface para salvar, Utilizar injeção de dependências
@@ -110,9 +109,6 @@ public class Principal {
 		listarSeriesBuscadas();
 		System.out.println("Escolha uma série pelo nome: ");
 		var nomeSerie = leitura.nextLine();
-
-//		Optional<Serie> serie = series.stream()
-//				.filter(s -> s.getTitulo().toLowerCase().contains(nomeSerie.toLowerCase())).findFirst();
 
 		Optional<Serie> serie = repositorio.findByTituloContainingIgnoreCase(nomeSerie);
 
@@ -141,23 +137,9 @@ public class Principal {
 			System.out.println("Série não encontrada!");
 		}
 
-		/*
-		 * DadosSerie dadosSerie = getDadosSerie(); List<DadosTemporada> temporadas =
-		 * new ArrayList<>();
-		 * 
-		 * for (int i = 1; i <= dadosSerie.totalTemporadas(); i++) { var json =
-		 * consumo.obterDados(ENDERECO + dadosSerie.titulo().replace(" ", "+") +
-		 * "&season=" + i + API_KEY); DadosTemporada dadosTemporada =
-		 * conversor.obterDados(json, DadosTemporada.class);
-		 * temporadas.add(dadosTemporada); } temporadas.forEach(System.out::println);
-		 */
 	}
 
 	private void listarSeriesBuscadas() {
-
-//		List<Serie> series = new ArrayList<>();
-//		series = dadosSeries.stream().map(d -> new Serie(d)).collect(Collectors.toList());
-//		series.stream().sorted(Comparator.comparing(Serie::getGenero)).forEach(System.out::println);
 
 		series = repositorio.findAll();
 		series.stream().sorted(Comparator.comparing(Serie::getGenero)).forEach(System.out::println);
@@ -192,10 +174,16 @@ public class Principal {
 
 		List<Serie> seriresEncontradas = repositorio
 				.findByAtoresContainingIgnoreCaseAndAvaliacaoGreaterThanEqual(nomeAtor, avaliacao);
-		
+
 		System.out.println("Séries em que " + nomeAtor + " trabalho: ");
 		seriresEncontradas.forEach(s -> System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));
 
+	}
+	
+	private void buscarTop5Series() {
+		
+		List<Serie> serieTop = repositorio.findTop5ByOrderByAvaliacaoDesc();
+		serieTop.forEach(s -> System.out.println(s.getTitulo() + " avaliação: " + s.getAvaliacao()));		
 	}
 
 }
